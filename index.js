@@ -18,7 +18,6 @@ app.post('/generate', async (req, res) => {
     await page.setContent(html, { waitUntil: 'networkidle0' });
 
     const pdf = await page.pdf({
-      path: outputPath,
       format: 'A4',
       printBackground: true,
       displayHeaderFooter: true,
@@ -39,7 +38,7 @@ app.post('/generate', async (req, res) => {
     });
     
     res.send(pdf);
-    
+
   } catch (e) {
     console.error('Erreur lors de la génération du PDF :', e);
     res.status(500).send('Erreur lors de la génération du PDF');
