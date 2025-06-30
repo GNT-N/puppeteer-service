@@ -10,8 +10,9 @@ app.post('/generate', async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({
-      headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: puppeteer.executablePath()
     });
 
     const page = await browser.newPage();
@@ -24,10 +25,13 @@ app.post('/generate', async (req, res) => {
       margin: { top: '0mm', bottom: '0mm', left: '0mm', right: '0mm' },
       footerTemplate: `
         <div style="width: 100%; font-size: 10px; color: #444; padding: 0 40px; margin-bottom: 10px; display: flex; justify-content: space-between;">
-          <div style="flex:1; text-align: center;">FLEX ENERGIE SARL au capital de 2000€ immatriculée au RCS de Chalon-sur-Saône au numéro SIRET 91289481300019</div>
-          <div style="width: 80px; text-align: right;">Page <span class="pageNumber"></span> / <span class="totalPages"></span></div>
-        </div>`
-      ,
+          <div style="flex:1; text-align: center;">
+            FLEX ENERGIE SARL au capital de 2000€ immatriculée au RCS de Chalon-sur-Saône au numéro SIRET 91289481300019
+          </div>
+          <div style="width: 80px; text-align: right;">
+            Page <span class="pageNumber"></span> / <span class="totalPages"></span>
+          </div>
+        </div>`,
       headerTemplate: `<div></div>`
     });
 
@@ -36,9 +40,7 @@ app.post('/generate', async (req, res) => {
       'Content-Type': 'application/pdf',
       'Content-Length': pdf.length
     });
-    
     res.send(pdf);
-
   } catch (e) {
     console.error('Erreur lors de la génération du PDF :', e);
     res.status(500).send('Erreur lors de la génération du PDF');
@@ -46,7 +48,6 @@ app.post('/generate', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 10000;
-
 app.listen(PORT, () => {
   console.log(`🚀 Puppeteer server running on port ${PORT}`);
 });
