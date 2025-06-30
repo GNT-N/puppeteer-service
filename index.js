@@ -37,8 +37,11 @@ app.post('/generate', async (req, res) => {
       'Content-Type': 'application/pdf',
       'Content-Length': pdf.length
     });
+    
     res.send(pdf);
+    
   } catch (e) {
+    console.error('Erreur lors de la génération du PDF :', e);
     res.status(500).send('Erreur lors de la génération du PDF');
   }
 });
