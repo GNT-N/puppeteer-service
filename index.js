@@ -8,6 +8,8 @@ app.use(bodyParser.text({ type: '*/*', limit: '10mb' }));
 app.post('/generate', async (req, res) => {
   const html = req.body;
 
+  console.log('HTML reçu:', html.slice(0, 100))
+
   try {
     const browser = await puppeteer.launch({
       headless: true,
@@ -15,7 +17,9 @@ app.post('/generate', async (req, res) => {
     });
 
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: 'networkidle0' });
+    // await page.setContent(html, { waitUntil: 'networkidle0' });
+    await page.setContent(html, { waitUntil: 'load' });
+
 
     const pdf = await page.pdf({
       format: 'A4',
