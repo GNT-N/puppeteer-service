@@ -6,7 +6,8 @@ const app = express();
 app.use(bodyParser.text({ type: '*/*', limit: '10mb' }));
 
 app.post('/generate', async (req, res) => {
-  const html = req.body;
+  // const html = req.body;
+  const sampleHtml = '<h1>Test PDF</h1><p>Contenu simple.</p>';
 
   console.log('HTML reçu:', html.slice(0, 100))
 
@@ -18,7 +19,8 @@ app.post('/generate', async (req, res) => {
 
     const page = await browser.newPage();
     // await page.setContent(html, { waitUntil: 'networkidle0' });
-    await page.setContent(html, { waitUntil: 'load' });
+    // await page.setContent(html, { waitUntil: 'load' });
+    await page.setContent(sampleHtml);
 
 
     const pdf = await page.pdf({
