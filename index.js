@@ -39,5 +39,8 @@ app.post('/generate', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Puppeteer server running on port ${PORT}`));
+const PORT = process.env.PORT || 10000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Puppeteer server running on port ${PORT}`);
+});
