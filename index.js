@@ -18,14 +18,18 @@ app.post('/generate', async (req, res) => {
     await page.setContent(html, { waitUntil: 'networkidle0' });
 
     const pdf = await page.pdf({
+      path: outputPath,
       format: 'A4',
       printBackground: true,
-      margin: {
-        top: '40px',
-        bottom: '60px',
-        left: '20px',
-        right: '20px'
-      }
+      displayHeaderFooter: true,
+      margin: { top: '0mm', bottom: '0mm', left: '0mm', right: '0mm' },
+      footerTemplate: `
+        <div style="width: 100%; font-size: 10px; color: #444; padding: 0 40px; margin-bottom: 10px; display: flex; justify-content: space-between;">
+          <div style="flex:1; text-align: center;">FLEX ENERGIE SARL au capital de 2000€ immatriculée au RCS de Chalon-sur-Saône au numéro SIRET 91289481300019</div>
+          <div style="width: 80px; text-align: right;">Page <span class="pageNumber"></span> / <span class="totalPages"></span></div>
+        </div>`
+      ,
+      headerTemplate: `<div></div>`
     });
 
     await browser.close();
